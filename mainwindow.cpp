@@ -17,7 +17,7 @@
 #include "debug.h"
 
 #define PROGRAM_NAME    "Cycit"
-#define PROGRAM_VERSION "1.4"
+#define PROGRAM_VERSION "1.51"
 
 #define CUSTOM_MIN  5108
 #define CUSTOM_MAX  9800
