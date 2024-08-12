@@ -164,6 +164,13 @@ void MainWindow::GameRequirements()
         DPRINTF("InitCac failed.\n");
         exit(-1);
     }
+
+    // 1.6 (Needed for supersoul linking in x2m)
+    if (!Xenoverse2::InitCostumeFile())
+    {
+        DPRINTF("InitCostumeFile failed.\n");
+        exit(-1);
+    }
 }
 
 bool MainWindow::ProcessShutdown()
@@ -1228,6 +1235,14 @@ bool MainWindow::EntryToX2m(const PalEntry &entry, const QString &file, const QS
 
     x2m.AddCsoEntry(cso_entry);
 
+    // Vlc
+    x2m.EnableVlc(true);
+    if (!Cac2X2m::SetVlc(entry.cms_entry, x2m.GetVlcEntry()))
+    {
+        DPRINTF("SetVlc failed.\n");
+        return false;
+    }
+
     if (!Cac2X2m::WriteFiles(&x2m, files))
     {
         DPRINTF("WriteFiles failed.\n");
@@ -1323,6 +1338,7 @@ bool MainWindow::EntryToX2m(const PalEntry &entry, const QString &file, const QS
         return false;
     }
 
+    Cac2X2m::ResolveCustomSuperSoul(&x2m, psc_entry);
     x2m.AddPscEntry(psc_entry);
 
     // aur
@@ -1346,6 +1362,17 @@ bool MainWindow::EntryToX2m(const PalEntry &entry, const QString &file, const QS
     }
 
     x2m.AddCmlEntry(cml_entry);
+
+    // Ikd
+    IkdEntry ikd_entry;
+
+    if (!Cac2X2m::SetIkd(entry.cms_entry, ikd_entry, equip.body_shape))
+    {
+        DPRINTF("SetIkd failed.\n");
+        return false;
+    }
+
+    x2m.AddIkdEntry(ikd_entry);
 
     if (!x2m.SaveToFile(Utils::QStringToStdString(file)))
     {
