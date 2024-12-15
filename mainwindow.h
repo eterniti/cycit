@@ -104,6 +104,8 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
+    void on_actionToggle_dark_mode_triggered();
+
 protected:
 
     void closeEvent(QCloseEvent *event);
@@ -168,6 +170,8 @@ private:
     void Load();
 
     bool GetBcsColorFromDialog(const std::string &part, uint16_t current_color, uint16_t cms_entry, uint16_t *out_color);
+
+    void ToggleDarkTheme(bool update_config);
 };
 
 #endif // MAINWINDOW_H

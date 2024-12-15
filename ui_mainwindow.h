@@ -53,6 +53,7 @@ public:
     QAction *actionFromX2mEquip;
     QAction *actionFromX2mStats;
     QAction *actionFromX2m;
+    QAction *actionToggle_dark_mode;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
     QWidget *infoTab;
@@ -190,6 +191,7 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuHelp;
+    QMenu *menuView;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -238,6 +240,8 @@ public:
         actionFromX2mStats->setObjectName(QStringLiteral("actionFromX2mStats"));
         actionFromX2m = new QAction(MainWindow);
         actionFromX2m->setObjectName(QStringLiteral("actionFromX2m"));
+        actionToggle_dark_mode = new QAction(MainWindow);
+        actionToggle_dark_mode->setObjectName(QStringLiteral("actionToggle_dark_mode"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
@@ -682,11 +686,13 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1020, 21));
+        menuBar->setGeometry(QRect(0, 0, 1020, 22));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuHelp = new QMenu(menuBar);
         menuHelp->setObjectName(QStringLiteral("menuHelp"));
+        menuView = new QMenu(menuBar);
+        menuView->setObjectName(QStringLiteral("menuView"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -696,12 +702,14 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuView->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuFile->addAction(actionConvert2X2M);
         menuFile->addAction(actionExportCac);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
         menuHelp->addAction(actionAbout);
+        menuView->addAction(actionToggle_dark_mode);
 
         retranslateUi(MainWindow);
 
@@ -770,6 +778,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         actionFromX2m->setToolTip(QApplication::translate("MainWindow", "From X2M", 0));
 #endif // QT_NO_TOOLTIP
+        actionToggle_dark_mode->setText(QApplication::translate("MainWindow", "Toggle dark mode", 0));
         label->setText(QApplication::translate("MainWindow", "Race:", 0));
         infoCopyButton->setText(QApplication::translate("MainWindow", "Copy Info", 0));
         label_2->setText(QApplication::translate("MainWindow", "Voice:", 0));
@@ -890,6 +899,7 @@ public:
         label_3->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">&lt;-- Apply me before leaving or nothing will be changed.</span></p></body></html>", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0));
+        menuView->setTitle(QApplication::translate("MainWindow", "View", 0));
     } // retranslateUi
 
 };

@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QStyleFactory>
 
 #include "Config.h"
 #include "Xenoverse2.h"
@@ -17,7 +18,7 @@
 #include "debug.h"
 
 #define PROGRAM_NAME    "Cycit"
-#define PROGRAM_VERSION "1.7"
+#define PROGRAM_VERSION "1.8"
 
 #define CUSTOM_MIN  5108
 #define CUSTOM_MAX  9800
@@ -32,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QDir::setCurrent(qApp->applicationDirPath());
 
     GameRequirements();
+
+    if (config.dark_theme)
+        ToggleDarkTheme(false);
 
     // Actions
     ui->copyButton->addAction(ui->actionFromOtherEntry);
@@ -109,6 +113,8 @@ void MainWindow::GameRequirements()
     }
 
     Xenoverse2::InitFs(Utils::QStringToStdString(config.game_directory));
+
+    config.LanguageSetup(false);
 
     if (!Xenoverse2::InitSystemFiles())
     {
@@ -1806,6 +1812,51 @@ bool MainWindow::GetBcsColorFromDialog(const std::string &part, uint16_t current
     return false;
 }
 
+void MainWindow::ToggleDarkTheme(bool update_config)
+{
+    if (update_config)
+    {
+        config.dark_theme = !config.dark_theme;
+        config.Save();
+    }
+
+    static bool dark_theme = false;
+    static QPalette saved_palette;
+
+    if (!dark_theme)
+    {
+        saved_palette = qApp->palette();
+        //DPRINTF("%s\n", qApp->style()->metaObject()->className());
+
+        qApp->setStyle(QStyleFactory::create("Fusion"));
+        QPalette palette;
+        palette.setColor(QPalette::Window, QColor(53,53,53));
+        palette.setColor(QPalette::WindowText, Qt::white);
+        palette.setColor(QPalette::Base, QColor(15,15,15));
+        palette.setColor(QPalette::AlternateBase, QColor(53,53,53));
+        palette.setColor(QPalette::ToolTipBase, Qt::white);
+        palette.setColor(QPalette::ToolTipText, Qt::white);
+        palette.setColor(QPalette::Text, Qt::white);
+        palette.setColor(QPalette::Button, QColor(53,53,53));
+        palette.setColor(QPalette::ButtonText, Qt::white);
+        palette.setColor(QPalette::BrightText, Qt::red);
+
+        //palette.setColor(QPalette::Highlight, QColor(142,45,197).lighter());
+        palette.setColor(QPalette::HighlightedText, Qt::black);
+        palette.setColor(QPalette::Disabled, QPalette::Text, Qt::darkGray);
+        palette.setColor(QPalette::Disabled, QPalette::ButtonText, Qt::darkGray);
+        qApp->setPalette(palette);
+
+        dark_theme =true;
+    }
+    else
+    {
+        qApp->setStyle(QStyleFactory::create("windowsvista"));
+        qApp->setPalette(saved_palette);
+        dark_theme = false;
+    }
+}
+
 void MainWindow::on_actionExit_triggered()
 {
     if (ProcessShutdown())
@@ -3216,3 +3267,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         ui->makeupColor3Button->update();
     }
 }
+
+void MainWindow::on_actionToggle_dark_mode_triggered()
+{
+    ToggleDarkTheme(true);
+}
+

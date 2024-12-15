@@ -1818,7 +1818,7 @@
      <x>0</x>
      <y>0</y>
      <width>1020</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1836,7 +1836,14 @@
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionToggle_dark_mode"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -1982,6 +1989,11 @@
    </property>
    <property name="toolTip">
     <string>From X2M</string>
+   </property>
+  </action>
+  <action name="actionToggle_dark_mode">
+   <property name="text">
+    <string>Toggle dark mode</string>
    </property>
   </action>
  </widget>
